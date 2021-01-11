@@ -1,0 +1,63 @@
+<!-- Bootstrap is a tool used to design responsive apps/webapps. It does this by figuring out the size of your screen and resizes your HTML elements. This means you dont need to worry about designing a mobile version of your website. You can add bootstrap to any of your websites by adding the following to the top of your HTML code: -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+<!-- You can center any text by setting the class to "text-center". This will
+center any text to the screen size -->
+<h1 class ="text-center">Sorry, not Sorry.</h1>
+
+<!-- we can make images responsive, so that it fits on any screen width when being viewed. to do this all we need to do is set the class to "img-responsive" -->
+<img class ="img-responsive" src="https://images.unsplash.com/photo-1586557959643-e54153da899b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80">
+<!-- Bootstrap has its own style of button, which looks better than the default HTML button. By giving the button element the classes "btn btn-default"-->
+<!-- So now that we have created the button we can notice that the size of the button is based on the length of the text. that means a "Submit" button will only be big enough to hold that word. by adding the class "btn-block" the button will be stretched to fit the page's entire horizontal space. NOTE: any elements after the button will be pushed to a newline. -->
+<button class ="btn btn-default btn-block">Fuck On!</buttton>
+<!-- "btn-primary" is the main color you'll use in your app. it helps highlight actions you want the user to take. -->
+<button class ="btn btn-primary btn-block">Fuck Off!</buttton>
+<!-- there are several pre-defined colors for buttons that come with bootstrap. So far we've seen "btn-default" and "btn-primary". "btn-info" is another class that can be added to buttons, it calls attention to optional actions the user can take. -->
+<button class ="btn btn-info btn-block">Fuck up!</buttton>
+<!-- "btn-danger" is used to warn the user of a process like deleting -->
+<button class ="btn btn-block btn-danger">Dont Fuck!</button>
+
+<!-- Bootstrap uses a responsive 12-column system, this makes it easy to arrange elements into a row and specify each ones ralative width. Bootstrap has different column widths depending on the users screen. e.g. phones have narrow screen, laptops have medium screens and monitors are big screens. Before we show the syntax you must remember that bootstrap classes can be applied to div tags and affect all elements within the div.-->
+<div class="row">
+<!-- all elements in the above div will be put in a row-->
+    <div class ="col-md-3">
+        <button class ="btn btn-default btn-block">Fuck On!</buttton>
+    </div>
+<!-- "col" defines the direction "md" stands for medium screen size and the "3" is how many blocks to take up-->
+    <div class ="col-md-3">
+        <button class ="btn btn-primary btn-block">Fuck Off!</buttton>
+    </div>
+    <div class ="col-md-3">
+        <button class ="btn btn-info btn-block">Fuck up!</buttton>
+    </div>
+    <div class ="col-md-3">
+        <button class ="btn btn-block btn-danger">Dont Fuck!</button>
+    </div>
+</div>
+
+<!-- BootStrap comes with built-in styles, you can use them to customize instead of CSS-->
+
+<!-- Font Awesome is a library of incons, it can be webfonts or vector graphics. they are treated like fonts, you can specify their size in pixels and they will also assume the font size of the parent element. you can add it to any app using:-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<!-- the i element is used to make elements italic, but when used with font Awesome classes it becomes an icon-->
+<button class="btn btn-block btn-primary"><i class="fas fa-thumbs-up"></i>Like</button>
+<button class="btn btn-block btn-info"><i class="fas fa-info-circle"></i>Info</button>
+<button class="btn btn-block btn-danger"><i class="fas fa-trash"></i>Delete</button>
+
+<!-- the 12 grid system also works on form elements, below is an example on radio buttons -->
+<form>
+    <div class="row">
+        <div class ="col-md-4">
+            <input type="radio">#1</input>
+        </div>
+        
+        <div class ="col-md-4">
+            <input type="radio">#2</input>
+        </div>
+        
+        <div class ="col-md-4">
+            <input type="radio">#3</input>
+        </div>
+    </div>
+</form>
+
