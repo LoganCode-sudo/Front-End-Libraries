@@ -1,0 +1,142 @@
+<head>
+<!-- Bootstrap CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+<!--jQuery is a library that is designed to simplify scripting on the client side. the most recognizable characteristic is the $ syntax, with this you can manipulate elements, create animations and even handle input events.-->
+
+<!-- you can add jQuery to your Html doc with the following script. -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Another library we are going to use is Animate.css. It provides animations that can be used in your webpage-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body>
+
+<!-- script tags, theses tags allows you to run javascript within them, this includes jQuery.-->
+<!-- We will learn functions later, the way the function was declared makes it run as soon as the browser has loaded your page.-->
+<!-- This can be read as: "when the DOCUMENT is READY run this FUNCTION-->
+<!-- All jQuery statements start with a $, also known as bling. -->
+<!-- HTML elements are selected with a selector, then does something with that element -->
+<script>
+    $(document).ready(function(){
+        $("button").addClass("animate__animated animate__bounce");
+    });
+</script>
+<button class="btn btn-default">Hi!</button>
+<!-- the code within the function can be read as: take the BUTTON elements and ADD the CLASSES Animate__animated(allows the element to be animated) and animate__bounce(makes the element bounce). We used the jQuery function .addclass() and the animate.css styles-->
+<!-- the prefix for animate.css is: animate__ followed by the animation type-->
+
+<!-- You can also target elements by their class. Just like in css, classes are referred to with a "." at the beginning-->
+<script>
+    $(document).ready(function(){
+        $(".greeting").addClass("animate__animated animate__backinLeft");
+    });
+</script>
+<h1 class="greeting">Welcome!</h1>
+
+<!-- Elements can also be targeted by their ID. just like in css, IDs can be referred to using "#" at the beginning-->
+<script>
+    $(document).ready(function(){
+        $("#intro").addClass("animate__animated animate__flash");
+    });
+</script>
+<h1 id="intro">My name is Logan.</h1>
+
+<!-- jQuery also has a .removeClass() function, it does the opposite of add -->
+<script>
+    $(document).ready(function(){
+        $("#removeCL").addClass("text-primary");
+        //the addclass function will run but we remove it once it is added
+        $("#removeCL").removeClass("text-primary");
+    });
+</script>
+<h1 id="removeCL">Wrong Color!</h1>
+
+<!-- You can also change the css of an element using jQuery. the .css function allows you to do that -->
+<script>
+    $(document).ready(function(){
+        $("#RedTarget").css("color","red");
+        //the syntax of .css() is ("css-style","style-value")
+    });
+</script>
+<h1 id="RedTarget">I want to be red.</h1>
+
+<!-- You can change non-CSS properties of Html elements with jQuery. the function prop() allows you to adjust the properties/attributes of an element. -->
+<script>
+    $(document).ready(function(){
+      $("#turnOff").prop("disabled",true);
+      //syntax is the same as .css().
+      //.prop("property",property-value)
+    });
+</script>
+<button id="turnOff">Does not work :(</button>
+
+<!-- you can html elements and text within another element, using the .html() function.any content within the element will be replaced -->
+<script>
+    $(document).ready(function(){
+        $("#changeH1").html("<em>this is the correct text!</em>");
+    });
+</script>
+<h1 id="changeH1">this is the wrong text...</h1>
+
+<!-- Similar to Html(), text() allows you to change the text within an element. any tags will be treated as text -->
+<script>
+    $(document).ready(function(){
+        $("#changeText").text("<em>this is the correct text!</em>");
+    });
+</script>
+<h1 id="changeText">this is the wrong text...</h1>
+
+<!-- You can remove elements from your webpage using the function .remove() -->
+<script>
+    $(document).ready(function(){
+        $("#notHere").remove();
+    });
+</script>
+<h1 id="notHere">I don’t exist</h1>
+
+<!-- you can move elements from one div to another using the appendTo() function.-->
+<script>
+    $(document).ready(function(){
+        $("#move").appendTo("#left-well");
+    });
+</script>
+
+<div class="row">
+    <div class="col-xs-6">
+      <div class="well" id="left-well">
+       <h1 class="well1">this</h1>
+       <h1 class="well1">is</h1>
+      </div>
+    </div>
+    
+    <div class="col-xs-6">
+      <div class="well" id="right-well">
+       <h1>dumb</h1>
+       <h1 id="move">smart</h1>
+      </div>
+    </div>
+    
+</div>
+
+<!-- You can use the clone()function to make a copy of an element. -->
+<script>
+    $(document).ready(function(){
+    //when using more than one function its called function chaining.
+    //we first make a clone of the element then move it to the opposite side
+      $(".well1").clone().appendTo("#right-well");
+    });
+</script>
+
+<!-- Each HTML element has a parent element that it inherits properties from. -->
+<!--for example all the current elements in the <body> is the children, making the <body> the parent element-->
+<!-- the parent() function allows you to access the parent of an element -->
+<script>
+    $(document).ready(function(){
+        $("#left-well").parent().css("background","green")
+        //the parent of the above is the <div class="col-xs-6">
+    });
+</script>
+
+
+</body>
