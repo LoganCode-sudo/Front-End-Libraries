@@ -114,7 +114,7 @@ h1{
 /* to bring partials into files we use @import */
 
 /* for the porpose lets say we have a partial called "_mixins.scss" */
-@import 'mixins'
+@import 'mixins';
 /* note that we did not need to include the _ or file extension, this is because SASS knows its a partial*/
 
 /* extend one set of styles to another element using @extend */
