@@ -133,10 +133,32 @@
 <!-- the parent() function allows you to access the parent of an element -->
 <script>
     $(document).ready(function(){
-        $("#left-well").parent().css("background","green")
+        $("#left-well").parent().css("color","green")
         //the parent of the above is the <div class="col-xs-6">
     });
 </script>
 
+<!--you can also refer to an elements children using the children() function-->
+<script>
+    $(document).ready(function(){
+        $("#right-well").children().css("color","red")
+        //all the elements within the right-well will be affected
+    });
+</script>
+<!-- So now we know that when an element is nested within another its known as the child, and the element its nested in is the parent. -->
+
+<!-- You can target elements based on their positions using the :even or :odd -->
+<script>
+    $(document).ready(function(){
+        $("#left-well:even").addClass("animate__animated animate__flash");
+        
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $("body").addClass("animate__animated animate__hinge");
+    });
+</script>
 
 </body>
