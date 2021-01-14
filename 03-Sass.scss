@@ -1,0 +1,134 @@
+/* Sass stands for "Syntactically Awesome StyleSheets" */
+/* it adds features that are not in the basic css syntax. it allows devs to simplify and maintain their stylesheets */
+/* it extends the Css language because it is a preProcessor. it takes code written using Sass and converts it into basic css. this allows you to create variables, nest CSS rules into others, and import other sass files, amoung other things. this results in code being easier to read. */
+/* there are two syntaxes of sass, the one we will be using is SCSS(Sassy CSS). this is an extension of CSS syntax. it means that every css file is a valid SCSS file. extension is .scss */
+/* the other syntax is known as indented syntax(or just SASS). it uses indentation rather than brackets to indicate nesting. it also uses newlines rathrer than semicolons. the file extension is .sass */
+
+/* You can create variables in scss that can be used to store data. its defined by $ followed by the variable name, and finally the data. this is helpful when a number of elements need the same css value. */
+$main-font: Arial, sans-serif;
+$main-color: green;
+h1{
+    font-family: $main-font;
+    color: $main-color;
+}
+
+/* in normal css elements are targeted on a different line to style it */
+
+// nav {
+//   background-color: red;
+// }
+
+// nav ul {
+//   list-style: none;
+// }
+
+// nav ul li {
+//   display: inline-block;
+// }
+
+/* we can make the above look much cleaner */
+nav {
+  background-color: red;
+  ul {
+    list-style: none;
+    li {
+      display: inline-block;
+    }
+  }
+}
+/* nesting can help organize your code by placing child styles within thier respective parent elements */
+
+/* You can create reusable css, its known as a mixin. */
+/* imagine that you have multiple elements that need box-shadow, doing this for each element can be time consuming and difficult to read */
+/*to declear you start with @mixin followed by a custom name*/
+@mixin shadows($x,$y,$blur,$c){
+    box-shadow:$x $y $blur $c;
+}
+/* as you can see above mixins work very similar to functions in js*/
+/* to use your mixin:*/
+h1{
+    @include shadows(5px,5px,3px,#000000);
+}
+
+/* SASS also comes with syntax for if statements */
+@mixin borders($val){
+    @if $val == light {
+        border: 1px solid black;
+    }
+    @else if $val == medium{
+        border: 3px solid black;
+    } 
+    @else if $val == heavy{
+        border:6px solid black;
+    }
+    @else{
+        border:none;
+    }
+}
+
+
+/* there is also a for loop in SASS, and there is two ways to use it. */
+/* start through end -does count the end number */
+/* start to end - doesnt count the end number */
+@mixin counter(){
+    @for $j from 1 to 6{
+        .text-#{$j} {
+        font-size:15px *$j;
+        }
+    }
+}
+/* the #{$j} is the syntax for combining a variable and text to make a string */
+
+/* there is also @each which loops over each item in a list or map */
+@mixin each(){
+    @each $color in blue,black,red{
+        .#{$color}-bg {
+        background-color:$color;
+        }
+    }
+    
+    /*maps have a slightly different syntax*/
+    $colors: ( color1:blue, color2:green, color3:red );
+
+    @each $key, $color in $colors {
+        .#{$color}-text {
+        color: $color;
+        }
+    }
+    /* $key variable is used to reference the keys in the map */
+}
+
+/* @while works similar to the one in js, it creates css rules until a condition is met */
+@mixin whileLoop(){
+    $x: 1;
+    @while $x < 13 {
+        .text-#{$x} {
+            font-size: 10 *$x;
+        }
+    $x: $x + 1;
+    }
+}
+
+/* Partials are separate files that hold segments of css code. theses files can be imported and used in other Sass files. this is a great way to group similar code into modules. */
+/* Naming partials start with a (_), this tells Sass it is a small segment */
+/* to bring partials into files we use @import */
+
+/* for the porpose lets say we have a partial called "_mixins.scss" */
+@import 'mixins'
+/* note that we did not need to include the _ or file extension, this is because SASS knows its a partial*/
+
+/* extend one set of styles to another element using @extend */
+/* basically copy the properties*/
+.panel{
+  background-color: red;
+  height: 70px;
+  border: 2px solid green;
+}
+
+.big-panel{
+  @extend .panel;
+  width: 150px;
+  font-size: 2em;
+}
+
+/* .big-panel will have the same styles as .panel, but with the extra width and font-size */
