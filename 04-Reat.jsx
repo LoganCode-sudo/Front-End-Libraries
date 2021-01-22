@@ -177,7 +177,7 @@ ReactDOM.render(RGB,document.getElementById("RGB"));
 {/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
 
 {/*You can also set default props. theses values are used when you dont specify*/}
-Welcome.defaultProps(user:'No_User');
+Welcome.defaultProps = {user:'No_User'};
 {/*so if you render the welcome component but dont give it a user value, it will use the above*/}
 {/*to override the default, just give "user" a value when calling the component*/}
 ReactDOM.render(Welcome,document.getElementById("not_my_name"));
@@ -185,3 +185,75 @@ ReactDOM.render(Welcome,document.getElementById("not_my_name"));
 
 {/*if you want the value of props to be integer instead of string, wrap the value in {} */}
 ReactDOM.render(<Welcome user={100}/>,document.getElementById("not_a_name"));
+
+{/*PropTypes is a way to check the type of the data being passed to a component*/}
+{/*for Example, your application makes an API call that retrieves data that is then passed to a component. with propTypes you can set the component to only accept data of a certain type, if any other type is passed a useful warning will be throw.*/}
+{/*the syntax is very similar to defaultProps*/}
+MyArr.propTypes ={color: PropTypes.array.isRequired}
+//ReactDOM.render(<MyArr color=" not an array" />,document.getElementById("not_an_arr"));
+{/*the above render will throw an error, this is because "MyArr" is expecting an array*/}
+{/*See it NOT work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+{/*NOTE:  As of React v15.5.0, PropTypes is imported independently from React, like this: import PropTypes from "https://cdn.skypack.dev/prop-types"; */}
+
+{/*With the ES6 class syntax you can use "this" to access the prop from within the class component*/}
+class MyNameIs extends React.Component{
+    constructor(props){
+        super(props);
+    };
+    
+    render() {
+        return(
+            <p>my name is: <strong>{this.props.name}</strong></p>
+        );
+    };
+};
+ReactDOM.render(<MyNameIs name="Logan" />,document.getElementById("MyNameIs"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+
+{/*Terminology recap*/}
+{/*a stateless functional component is a function that takes props as a paremeter and returns JSX*/}
+const StatelessFunc = (props) =>{
+    return (
+        <p>I am a... <strong>{props.state}</strong></p>
+    );
+};
+ReactDOM.render(<StatelessFunc state="Stateless functional component" />,document.getElementById("statelessFunc"));
+
+{/*A stateless component is a class that extends "React.Component". it doesn not use internal state */}
+class StateComp extends React.Component{
+    constructor(props){
+        super(props);
+    };
+    
+    render() {
+        return (
+            <p>I am a... <strong>{this.props.state}</strong></p>
+        );
+    };
+};
+ReactDOM.render(<StateComp state="Stateless component" />,document.getElementById("statelessComp"));
+
+{/*A stateful component is a class component that does maintain its own internal state, theses are often referred to as react components or just components*/}
+class StatefulComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+        name:"Stateful component"
+      }
+  }
+  render() {
+    return (
+      <div>
+        <h1>{this.state.name}</h1>
+      </div>
+    );
+  }
+};
+ReactDOM.render(<StatefulComponent />,document.getElementById("statefulComp"));
+{/*state consists of any data your application needs to know about(can change over time). your app should respond to the changes by making UI changes when necessary*/}
+{/*as you can see state is declared within constructor. it is declared as an object, within the object is the property and the property value. we then call that value through state instead of prop */}
+{/*state is one of the most powerful features od components. it allows you to track important data in you app and render a UI in response to changes in data. when state data updates, it triggers a re-render of the component using the data*/}
+{/*Note: when you make a component stateful, no other components are aware of its state. this means state is local to the component its declared in. this is very important because it allows you to write certain logic and have it contained in one place of your code*/}
+
+{/*a comman pattern, minimize the use of statefulness, use stateless functional components wherever possible. this helps improve development and maintainance of your app by making it easier to follow how changes to state affect its behaviour */}
