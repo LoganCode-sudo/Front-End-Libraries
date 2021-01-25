@@ -245,7 +245,7 @@ class StatefulComponent extends React.Component {
   render() {
     return (
       <div>
-        <h1>{this.state.name}</h1>
+        <p>i am a... <strong>{this.state.name}</strong></p>
       </div>
     );
   }
@@ -253,7 +253,87 @@ class StatefulComponent extends React.Component {
 ReactDOM.render(<StatefulComponent />,document.getElementById("statefulComp"));
 {/*state consists of any data your application needs to know about(can change over time). your app should respond to the changes by making UI changes when necessary*/}
 {/*as you can see state is declared within constructor. it is declared as an object, within the object is the property and the property value. we then call that value through state instead of prop */}
-{/*state is one of the most powerful features od components. it allows you to track important data in you app and render a UI in response to changes in data. when state data updates, it triggers a re-render of the component using the data*/}
+{/*state is one of the most powerful features of components. it allows you to track important data in you app and render a UI in response to changes in data. when state data updates, it triggers a re-render of the component using the data*/}
 {/*Note: when you make a component stateful, no other components are aware of its state. this means state is local to the component its declared in. this is very important because it allows you to write certain logic and have it contained in one place of your code*/}
 
 {/*a comman pattern, minimize the use of statefulness, use stateless functional components wherever possible. this helps improve development and maintainance of your app by making it easier to follow how changes to state affect its behaviour */}
+
+{/*there is another way to access state, this can be done in the render() before the return. you can write JavaScript code directly, you could declare functions, access data from prop and state, perform computations on this data and so on. you can then assign any data to variables and access them in the return statement*/}
+class JsFunctionality extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+        name:"logan"
+      }
+  }
+  render() {
+  const name = this.state.name
+  {/*we can write normal js */}
+    return (
+      <div>
+        <h1>my name is... {name}</h1>
+        {/*accessed variable*/}
+      </div>
+    );
+  };
+};
+ReactDOM.render(<JsFunctionality />,document.getElementById("JsCode"));
+
+{/*so you have seen how to initalize state in the constructor. there is also a way to change a components state using .setState() call it within the component with this.setState() */}
+class SettingState extends React.Component{
+    constructor(props){
+        super(props);
+        this.state ={
+            username: "LoganCode"
+        };
+      this.handleClick = this.handleClick.bind(this);
+      {/*the above is know as a class method. we need to bind class methods with "this" so it can access state and props of the component its in. */}
+    };
+    
+    {/*so we have already bind the method above and can now code it to do something*/}
+    handleClick() {
+     this.setState({
+       username: "LoganCode-sudo"
+     });
+  }
+  
+    render(){
+      
+        return(
+          <div>
+            <button onClick ={this.handleClick}>GitHub</button>
+            <p>{this.state.username}</p>
+          </div>
+        );
+    };
+};
+ReactDOM.render(<SettingState />,document.getElementById("GitHub"));
+
+{/*the problem with using setState() is when you want the previous state. React may batch multiple updates into a single update (you lose previous values along the way). so if your next state depends on the previous state you wont have the value you need.*/}
+{/*there is away around it though, by passing a function to setState() and giving it access to state and/or props, you are guaranteed to work with the most current values */}
+class AgeCounter extends React.Component{
+    constructor(props){
+        super(props);
+        this.state ={
+            age:10
+        };
+        this.handleClick = this.handleClick.bind(this);
+    };
+    
+    handleClick() {
+     this.setState((state) =>({
+         age: state.age + 1
+     }));
+  };
+    
+    render(){
+        return(
+        <div>
+            <p>I am {this.state.age} years old.</p>
+            <button onClick={this.handleClick}> add year...</button>
+        </div>
+        );
+    };
+};
+ReactDOM.render(<AgeCounter />,document.getElementById("AgeCount"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
