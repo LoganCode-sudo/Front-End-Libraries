@@ -337,3 +337,108 @@ class AgeCounter extends React.Component{
 };
 ReactDOM.render(<AgeCounter />,document.getElementById("AgeCount"));
 {/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+{/*there will be more complex interactions between state and the rendered UI. Such as form controls (inputs, textare). theres maintain their own state in the DOM as "user types". In React you can move this mutable state into a component's state. The users input will then become part of the application state, React controls the value of that input field. a react component with input fields the user can use is known as a controlled input form. */}
+class ControlledInput extends React.Component{
+    constructor(props){
+        super(props);
+        this.state ={
+            input: "test here..."
+        };
+    };
+    
+    handleChange(event){
+    {/*pass "event" to class method. it handles the input*/}
+        this.setState({
+            input: event.target.value
+        });
+    };
+    
+    render(){
+        return (
+            <div>
+            {/*as you can see you can bind "this" in the JSX return as well*/}
+                <input value={this.state.input} onChange={this.handleChange.bind(this)} />
+                <p>Output: {this.state.input}</p>
+            </div>
+        );
+    };
+};
+
+ReactDOM.render(<ControlledInput />,document.getElementById("controlled"));
+
+{/*you can create a controlled form similar to what was shown above*/}
+class ControlledForm extends React.Component{
+    constructor(props){
+        super(props);
+        this.state ={
+            input: "",
+            submit: ""
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    };
+    
+    handleChange(event) {
+    this.setState({
+      input: event.target.value
+    });
+  };
+  
+    
+    handleSubmit(event) {
+    this.setState({
+      submit: this.state.input
+    });
+  };
+  
+    
+    render(){
+        return(
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <input value={this.state.input} onChange={this.handleChange} />
+                    <button type="submit" >Submit!</button>
+                </form>
+                <p>{this.state.submit}</p>
+            </div>
+        );
+    };
+};
+ReactDOM.render(<ControlledForm />,document.getElementById("controlledForm"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+{/*we have seen props passed to child elements and child react components, but where does it come from?*/}
+{/*a comman pattern is to have a stateful component containing the state important to your app(that then renders child components). you want these components to have access to some pieces of that state, theses pieces are passed in as props */}
+{/*this illustrates some important paradigms in React.*/}
+{/*first: unidirectional data flow. state flows in one direction down the tree of your application components, from the stateful parent to the child component (child only recieve the state data they need*/}
+{/*second: complex stateful apps can be broken down into just a few, maybe a single stateful component. the rest of the components recieve state from the parent as props, and render a UI from that state. it begins to create a separation where state management is handled in one part of code and UI rendering in aonther. this is one of React's key principles. when done correctly it makes desinging complex applications much easier*/}
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 'CamperBot'
+    }
+  }
+  render() {
+    return (
+       <div>
+         <Navbar name ={this.state.name} />
+       </div>
+    );
+  }
+};
+
+class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+    <div>
+      <h1>Hello, my name is:{this.props.name} </h1>
+    </div>
+    );
+  }
+};
+ReactDOM.render(<Navbar />,document.getElementById("childComp"));
