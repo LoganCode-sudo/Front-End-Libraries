@@ -429,6 +429,10 @@ class MyApp extends React.Component {
   }
 };
 
+{/*the above is a stateful component that has the state name*/}
+{/*the below is a stateless component that gets  its props from the state of the stateful component*/}
+{/*the flow is as follows: define name in the stateful component, the value is then called in the stateless component through props (which gets the needed state)*/}
+
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -442,3 +446,117 @@ class Navbar extends React.Component {
   }
 };
 ReactDOM.render(<Navbar />,document.getElementById("childComp"));
+
+{/*you can also pass a method through props*/}
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({
+      inputValue: event.target.value
+    });
+  };
+  render() {
+    return (
+       <div>
+        
+        <GetInput input = {this.state.inputValue} handleChange= {this.handleChange}/>
+        <RenderInput input ={this.state.inputValue}/>
+        
+       </div>
+    );
+  }
+};
+
+class GetInput extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h3>Get Input:</h3>
+        {/*as you can see the below calls "handleChange" from the MyApp stateful component through props.*/}
+        <input value={this.props.input} onChange={this.props.handleChange}/>
+      </div>
+    );
+  }
+};
+
+class RenderInput extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h3>Input Render:</h3>
+        <p>{this.props.input}</p>
+      </div>
+    );
+  }
+};
+
+{/*React has special mwthods that provide opportunities to perform actions at specific times in the lifecycle of a component( lifecycle methods/hooks). theses actions can be done before rendering, before updating, before receiving props, before the unmount and so on */}
+{/*some main lifecycles methods are:
+    componentDidMount()
+    shouldComponentUpdate()
+    componentDidUpdate()
+    componentWillMount()
+    componentWillUnmount()
+*/}
+
+{/*componentWillMount() is used to update the state value right before the component is rendered to the DOM. */}
+class MyMount extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        name: ""
+    };
+  };
+  
+  componentWillMount() {
+   this.setState({
+       name: "Logan"
+   })
+  };
+  
+  render() {
+    return (
+        <div>
+            <p>{this.state.name}</p>
+        </div>
+    );
+  };
+};
+ReactDOM.render(<MyMount />,document.getElementById("myMount"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+{/*most web devs will need to make a API call to retrieve data*/}
+{/*the best practise with react is to place the API calls/any calls to the server in the componentDidMount() method.this is called after a component is mounted to the DOM. any calls to setState() will trigger a re-render od the conponent. when you call an API in this method, and set state with the data from the AIP return it will automatically triggger an update once you receive the data. */}
+class MyDidMount extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeUsers: null
+    };
+  };
+  componentDidMount() {
+  {/*the below is a fake server call to show an example of how it works*/}
+    setTimeout(() => {this.setState({activeUsers: 1273});}, 2500);
+  };
+  render() {
+    return (
+      <div>
+        <h1>Active Users:{this.state.activeUsers} </h1>
+      </div>
+    );
+  };
+};
+ReactDOM.render(<MyDidMount />,document.getElementById("mydidMount"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
