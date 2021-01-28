@@ -560,3 +560,210 @@ class MyDidMount extends React.Component {
 };
 ReactDOM.render(<MyDidMount />,document.getElementById("mydidMount"));
 {/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+{/* the componentDidMount() method is also the best place to attach any event listeners you need for specific functionality. React provides a synthetic event system which wraps the event system in the browser. this means that React's event system behaves exactly the same regardles of the users browser.*/}
+{/*we have already used some of these synthetic event handlers such as onClick(). reacts event system is great for most interactions you'll manage on DOM elements. however if you want to attach an event handler to the doc or windows object, you will have to do it directly.*/}
+class MyListener extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            output: ""
+        };
+        this.handleEnter = this.handleEnter.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+    };
+    
+    componentDidMount(){
+        {/*add event listener*/}
+        document.addEventListener("event", this.handleKeyPress);
+    };
+    
+    componentWillUnmount(){
+        {/*its good practise to use the below to clean up events before its unmounted and destroyed*/}
+        document.removeEventListener("event",this.handleKeyPress);
+    };
+    
+    handleEnter(){
+        this.setState((state) =>({
+            output: "this is enter"
+        }));
+    };
+    
+    handleKeyPress(event){
+        {/*the below is used to check what key the user pressd, keyCode is the Number assinged to a key, 13 is enter*/}
+        if(event.keyCode === 13){
+            this.handleEnter();
+        };
+    };
+    
+    render(){
+        return (
+            <div>
+                <h1>{this.state.output}</h1>
+            </div>
+        );
+    };
+    
+};
+ReactDOM.render(<MyListener />,document.getElementById("eventListener"));
+
+{/*if componets receive a new state or prop, it re-renders itself and its children, normally this isnt a problem*/}
+{/*react offers a lifecycle method you can call when child components receice a new state or prop, and declare specifically if the component should update or not*/}
+{/*the method shouldComponentUpdate() takes two parameters, nextProps and nextState*/}
+{/*this method is a useful way to optimize performance. e.g. the default behaviour is that your component re-renders when it receives new props, even if the prop didnt change. you can use ShouldComponentUpdate() to prevent this by comparing the props. the method returns a boolean that triggers the re-render or not*/}
+class OnlyEvens extends React.Component {
+  constructor(props) {
+    super(props);
+  };
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('Should I update?');
+    {/*only if the number is even will it re render*/}
+    if(nextProps.value % 2 === 0){
+      return true ;
+    }else{
+      return false;
+    };
+  };
+  
+  componentDidUpdate() {
+    console.log('Component re-rendered.');
+  };
+  
+  render() {
+    return <h1>{this.props.value}</h1>;
+  };
+};
+
+class Controller extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 0
+    };
+    this.addValue = this.addValue.bind(this);
+  };
+  
+  addValue() {
+    this.setState(state => ({
+      value: state.value + 1
+    }));
+  };
+  
+  render() {
+    return (
+      <div>
+        <button onClick={this.addValue}>Add</button>
+        <OnlyEvens value={this.state.value} />
+      </div>
+    );
+    
+  };
+  
+};
+ReactDOM.render(<Controller />,document.getElementById("isEven"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+{/*inline styles, you might remember theses from HTML using the style tag. you can do the same in React but with a little difference*/}
+class Colorful extends React.Component {
+  render() {
+    return (
+    {/*the styles are nested within two sets of {{}}*/}
+      <div style={{color:"red", fontSize:"72px"}}>Big Red</div>
+      {/*also note that we use camel case for styles that use - like font-size. also note that "72px" is in quotes, this is so that we can specify the size type px */}
+    );
+  }
+};
+
+{/*you can create style objects that hold styles. this can help when multiple elements need the same style.*/}
+const styles = {
+  color: "purple",
+  fontSize: "40px",
+  border:"2px solid purple"
+};
+
+class Colorful extends React.Component {
+  render() {
+    return (
+      <div style={styles}>Style Me!</div>
+    );
+  }
+};
+
+{/*you can write javascript directly in the render() before the return*/}
+class MyTest extends React.Component{
+    constructor(props){
+        super(props);
+    };
+    
+    render(){
+        var age =19;
+        
+        return (
+            <h1>{age}</h1>
+        );
+    };
+};
+ReactDOM.render(<MyTest />,document.getElementById("OfAge"));
+
+{/*being able to write normal js allows you to control what is rendered based on how you process the return. below is an example of using a if/else statement to render different UI*/}
+class MyIfStatement extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      display: true
+    }
+    this.toggleDisplay = this.toggleDisplay.bind(this);
+  }
+  
+  toggleDisplay() {
+    this.setState((state) => ({
+      display: !state.display
+    }));
+  }
+  
+  render() {
+    if(this.state.display === true){
+        return (
+            <div>
+                <button onClick={this.toggleDisplay}>Toggle Display</button>
+                <h1>Displayed!</h1>
+            </div>
+        );
+    }else{
+        return (
+            <div>
+                <button onClick={this.toggleDisplay}>Toggle Display</button>
+            </div>
+        );
+    };
+   
+  };
+};
+ReactDOM.render(<MyIfStatement />,document.getElementById("ifTrue"));
+{/*See it work on codepen: https://codepen.io/Logan_code/pen/BaLMwdX */}
+
+{/*the above will work when dealing with afew different outcomes, but there is another way to achieve the same results.*/}
+{/*the && operator is used to create a sort of inline if statement:*/}
+class MyAndOp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      display: true
+    }
+    this.toggleDisplay = this.toggleDisplay.bind(this);
+  }
+  toggleDisplay() {
+    this.setState(state => ({
+      display: !state.display
+    }));
+  }
+  render() {
+    return (
+       <div>
+         <button onClick={this.toggleDisplay}>Toggle Display</button>
+         {/*the below reads, if state.display is true show this <h1>. so only if the value is true will h1 show up. {condition && what-to-render} */}
+         {this.state.display ==true && <h1>Displayed!</h1>}
+       </div>
+    );
+  }
+};
