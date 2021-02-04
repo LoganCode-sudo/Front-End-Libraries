@@ -161,3 +161,32 @@ const rootReducer = Redux.combineReducers({
 });
 //the state held in the store will be a single object containing both reducers properties
 const store = Redux.createStore(rootReducer);
+
+// So you alreay know how to dispatch actions to the redux store, but it only has the "type" data. You can also send specific data along with actions. it is actually very common because actions usually originate from user interaction and tend to carry some data with them. Redux store needs to know about this data.
+const ADD_NOTE = 'ADD_NOTE';
+
+const notesReducer = (state = 'Initial State', action) => {
+  switch(action.type) {
+    case ADD_NOTE:
+      return action.text
+    default:
+      return state;
+  }
+};
+
+const addNoteText = (note) => {
+  return {
+    type: ADD_NOTE,
+    text: note
+    };
+};
+
+const store = Redux.createStore(notesReducer);
+
+console.log(store.getState());
+store.dispatch(addNoteText('Hello!'));
+console.log(store.getState());
+// see it work on codepen.io: https://codepen.io/Logan_code/pen/PobPLeZ
+
+// Normally, a given program's code runs straight along, one thing happening at a given time. if a function relies on the results of another function, it has to wait till the first one is done. the program stops from the users perspective. In today's era with multi core processors it doesnt make sense sitting and waiting. why not just let one task run on one core while you get other work done. this is the basics of asynchronous
+
