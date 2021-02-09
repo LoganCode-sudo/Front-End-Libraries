@@ -188,5 +188,118 @@ store.dispatch(addNoteText('Hello!'));
 console.log(store.getState());
 // see it work on codepen.io: https://codepen.io/Logan_code/pen/PobPLeZ
 
-// Normally, a given program's code runs straight along, one thing happening at a given time. if a function relies on the results of another function, it has to wait till the first one is done. the program stops from the users perspective. In today's era with multi core processors it doesnt make sense sitting and waiting. why not just let one task run on one core while you get other work done. this is the basics of asynchronous
+// Normally, a given program's code runs straight along, one thing happening at a given time. if a function relies on the results of another function, it has to wait till the first one is done. the program stops from the users perspective. In today's era with multi core processors it doesnt make sense sitting and waiting. why not just let one task run on one core while you get other work done. this is the basics of asynchronous.
 
+// At some point you will need to call asynchronous endpoints in your redux app. redux provides middleware designed specifically for this purpose, called Redux Thunk middleware.
+// to include it, you pass it as an argument to Redux.applyMiddleware(). this statement is then provided as a second optional parameter to the createStore() function.
+// to create an asynchronous action, you return a function in the action creator that takes dispatch as an argument. within this function, you can dispatch actions and perform asynchronous requests.
+const REQUESTING_DATA = 'REQUESTING_DATA'
+const RECEIVED_DATA = 'RECEIVED_DATA'
+
+const requestingData = () => {
+    return {
+        type: REQUESTING_DATA
+        }
+};
+
+const receivedData = (data) => {
+    return {
+        type: RECEIVED_DATA, users: data.users
+        }
+};
+
+const handleAsync = () => {
+//remember that you are passing dispatch as a parameter to this special action creator. this is what you will use to dispatch your actions. the action is simply passed to dispatch and the middleware takes care of the rest
+  return function(dispatch) {
+  //its comman to dispatch an action before initiating any asynchronous behavior so that the application state knows that some data is being requested
+    store.dispatch(requestingData());
+
+// simulated asynchronous request
+    setTimeout(function() {
+      let data = {
+        users: ['Jeff', 'William', 'Alice']
+      }
+      //once your data had been received, you dispatch another action that carries that data payload along with information that the action is completed.
+      store.dispatch(receivedData(data)) },
+      2500);
+  }
+};
+
+const defaultState = {
+  fetching: false,
+  users: []
+};
+
+const asyncDataReducer = (state = defaultState, action) => {
+  switch(action.type) {
+    case REQUESTING_DATA:
+      return {
+        fetching: true,
+        users: []
+      }
+    case RECEIVED_DATA:
+      return {
+        fetching: false,
+        users: action.users
+      }
+    default:
+      return state;
+  }
+};
+
+const store = Redux.createStore(
+  asyncDataReducer,
+  Redux.applyMiddleware(ReduxThunk.default)
+);
+
+//so far we have covered the core principles of redux,(how to create actions, action creators, redux store, dispatching, and state updates with pure reducers). we have also seen how to manage complex state with reducers compositions and handle asynchronous actions.
+// below is an example of the basic principles
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+
+const counterReducer =(state=0,action)=>{
+    switch(action.type){
+        case INCREMENT:
+        return state +1
+        case DECREMENT:
+        return state -1
+        default:
+        return state;
+    }
+};
+
+const incAction = ()=>{
+    return {
+        type:INCREMENT
+    }
+}
+
+const decAction =()=>{
+    return{
+        type:DECREMENT
+    }
+}
+
+const store = Redux.createStore(counterReducer);
+
+// NEVER MUTATE STATE
+
+//Immutable state means that you never modify state directly, instead, you return a new copy.
+//if you took a look a snapshot of the state of a redux app over time you would see somthing like (state1, state2, state3, ...) each state may be similar to the last, but each is a distinct piece of data. this immuntability is what provides such features as time-travel debugging.
+// redux does not actively enforce state immutability in its store or reducers, thats the programmers responsibility. luck for us, JavaScript(ES6) provides several useful tools you can use to enforce immutability of your state.
+
+//One way to enforce immutablitiy is the spread operator (...). the main purpose in Redux is, it will produce a new array instead of modify the original
+const myArr = [1,2,3,4];
+let newArr = [...myArr];
+
+//to clone an array but add additional values in the new arr, you could write [...myArr,newArr]. this just says make a copy of myArr but add newArr to the end.
+
+//slice() is a good way to remove values from a state array but returns a new Arr instead of mutate the state
+[
+...state.slice(0,action.index),
+...state.slice(action.index+1,state.length)
+]
+
+// there are also ways to enforce state immutability if state is an object. Object.assign() takes a target object and source objects and maps properties from the source object to the target object. any matching properties are overwritten by the source object. this is commonly used to make shallow copies of objects by passing an empty object first, followed by the object(s) you want to copy.
+const newObject = Object.assign({}, obj1, obj2);
+//newObject will become an object of obj1 and obj2
